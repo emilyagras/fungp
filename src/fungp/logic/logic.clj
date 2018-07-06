@@ -1,4 +1,4 @@
-(ns fungp.logics.logic
+(ns fungp.logic.logic
   (:require [fungp.util :as utils]))
 
 (defn terminal

@@ -1,3 +1,4 @@
+(ns fungp.defined-branches)
 ;;; Branches and Modular Structure
 ;;; ------------------------------
 ;;;
@@ -6,7 +7,7 @@
 ;;;
 ;;; Some of the handling for these branches was covered in fungp.core, but the details are handled here.
 
-(ns fungp.defined-branches)
+
 
 ;;; ### Automatically Defined Functions
 ;;;
