@@ -1,41 +1,8 @@
-;;; Mike Vollmer, 2012, GPL
-;;;
-;;; Downloading and Installing
-;;; --------------------------
-;;;
-;;; [This project is hosted on GitHub.](https://github.com/probabilityZero/fungp)
-;;;
-;;; To install it, you can clone the git repository or grab the zip/tar file from
-;;; the above link. You'll need Clojure installed, and you'll probably want
-;;; [Leiningen](https://github.com/technomancy/leiningen) (the latter will take
-;;; care of the former). See below for how to run the samples included with this
-;;; library.
-;;;
-;;; What is this?
-;;; -------------
-;;;
-;;; **fungp** is a parallel genetic programming library implemented in the
-;;; Clojure programming language, pronounced fun-gee-pee. The "fun" comes
-;;; from functional, and because genetic programming can be fun! Also I'm
-;;; bad at naming things.
-;;;
-;;; > There are only two hard things in Computer Science: cache invalidation,
-;;; > naming things, and off-by-one errors.
-;;; >
-;;; > --- *Paraphrased from Phil Karlton*
-;;;
-;;; The library is in its early stages right now, but it's usable. Currently it
-;;; has the following features:
-;;;
-;;;  * Custom evaluation and reporting logic
-;;;  * Parallelism: subpopulations run in native threads
-;;;  * Evolve and test functions of multiple arities
-;;;  * Evolve subroutines
-;;;  * Evolve code that interacts with Java or other JVM languages
-;;;
-;;; How do I use it?
-;;; ----------------
-;;;
+(ns fungp.core
+  (:use fungp.util)
+  (:use fungp.defined-branches)
+  (:require [fungp.logics.logic :as logic]))
+
 ;;; Call the **run-genetic-programming** function with a map containing these keyword parameters:
 ;;;
 ;;; * iterations : number of iterations *between migrations*
@@ -75,13 +42,6 @@
 ;;; the management of local variables up to the user, which (thanks to dynamic Vars) is fairly
 ;;; straightforard. See the compile-ants sample for an example of this.
 ;;;
-;;; Environment, distribution
-;;; -------------------------
-;;;
-;;; I highly recommend you use Leiningen. *fungp* is set up as a Leiningen project. 
-;;; [Leiningen](https://github.com/technomancy/leiningen#installation) (or "lein") is available 
-;;; for all major operating systems and is trivial to install.
-;;;
 ;;; By itself *fungp* has no "main" method, so running it won't do anything. The samples can be
 ;;; run individually, and each has a "test-*" function that launches it. I recommend you run
 ;;; them from the REPL, as they have some settable parameters.
@@ -104,24 +64,11 @@
 ;;; in one sitting. To actually use it, you'll likely have to at least read the sample code, and
 ;;; probably read most of this code as well.
 ;;;
-
-(ns fungp.core
-  "This is the namespace declaration. It is the start of the core of the library."
-  (:use fungp.util)
-  (:use fungp.defined-branches))
-
 ;;; ### Tree creation
 ;;;
 ;;; My method of random tree generation is a combination of the "grow" and "fill"
 ;;; methods of tree building, similar to Koza's "ramped half-and-half" method.
 
-(defn terminal
-  "Return a random terminal or number."
-  [terminals numbers]
-  (if (and (flip 0.5)
-           (not (empty? numbers)))
-    (rand-nth numbers)
-    (rand-nth terminals)))
 
 (defn create-tree
   "Build a tree of source code, given a mutation depth, terminal sequence,
@@ -131,10 +78,10 @@
    its arity, in this form: [function arity]."
   [mutation-depth terminals numbers functions gtype]
   ;; conditions: either return terminal or create function and recurse
-  (cond (zero? mutation-depth) (terminal terminals numbers)
+  (cond (zero? mutation-depth) (logic/terminal terminals numbers)
         (and (= gtype :grow)
              (flip 0.5))
-        (terminal terminals numbers)
+        (logic/terminal terminals numbers)
         :else (let [[func arity] (rand-nth functions)]
                 (cons func (repeatedly arity
                                        #(create-tree (dec mutation-depth)
