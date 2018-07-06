@@ -1,8 +1,8 @@
-(ns fungp.test.core
+(ns fungp.test.core-test
   (:use [fungp.core])
   (:use [clojure.test]))
 
-(defn list-or-cons? [tree] 
+(defn list-or-cons? [tree]
   (or (list? tree)
       (= clojure.lang.Cons (type tree))))
 
@@ -28,6 +28,6 @@
                (is (seq? subtree))))
 
 (deftest test-truncate
-         (let [tree (create-tree 5 test-terminals [] test-functions :fill)]
-           (do (is (= tree (truncate tree 10)))
-               (is (not (= tree (truncate tree 2)))))))
+  (let [tree (create-tree 5 test-terminals [] test-functions :fill)]
+    (do (is (= tree (truncate tree 10)))
+        (is (not (= tree (truncate tree 2)))))))
