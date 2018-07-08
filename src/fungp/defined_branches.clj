@@ -5,10 +5,6 @@
 ;;; *fungp* is capable of evolving multiple branches in an individual. In addition to the main branch,
 ;;; or the "Result Defining Branch," it can evolve functions (Automatically Defined Functions, or ADFs).
 ;;;
-;;; Some of the handling for these branches was covered in fungp.core, but the details are handled here.
-
-
-
 ;;; ### Automatically Defined Functions
 ;;;
 ;;; ADFs are functions of arbitrary arity that can be called from the main branch. The following functions
@@ -93,7 +89,6 @@
   [adl-count]
   (vec (map #(symbol (str "adl" %)) (range adl-count))))
 
-;;; ### Putting it together
 
 (defn build-branch-vector
   "This function builds the vector that goes into the let statement for each individual. It is intended to

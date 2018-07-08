@@ -60,16 +60,6 @@
 ;;;
 ;;; At that point the cart example will run.
 ;;;
-;;; The code
-;;; --------
-;;;
-;;; The code here in the core.clj file is rather brief (but dense), and it should be readable
-;;; in one sitting. To actually use it, you'll likely have to at least read the sample code, and
-;;; probably read most of this code as well.
-;;;
-
-
-
 
 ;;; ### Putting it together
 ;;;
@@ -86,22 +76,33 @@
 
 
 
+(defn run-genetic-programming  [{:keys [iterations
+                                        migrations
+                                        num-islands
+                                        population-size
+                                        tournament-size
+                                        mutation-probability
+                                        mutation-depth
+                                        max-depth terminals
+                                        functions numbers
+                                        fitness
+                                        report
+                                        adf-arity
+                                        adf-count
+                                        adl-count
+                                        adl-limit]
+                                 :or {tournament-size 3
+                                      mutation-probability 0.1
+                                      mutation-depth 6
+                                      adf-arity 1
+                                      adf-count 0
+                                      adl-count 0
+                                      adl-limit 25
+                                      numbers []}}]
 
-
-(defn run-genetic-programming
-  "This is the entry function. Call this with a map of the parameters to run the genetic programming algorithm."
-  [{:keys [iterations migrations num-islands population-size tournament-size mutation-probability
-           mutation-depth max-depth terminals functions numbers fitness report adf-arity adf-count
-           adl-count adl-limit]
-    ;; the :or block here specifies default values for some of the arguments
-    :or {tournament-size 3 mutation-probability 0.1 mutation-depth 6 adf-arity 1 adf-count 0
-         adl-count 0 adl-limit 25 numbers []}}]
-  ;; some basic type checking: most of the parameters must be integers
-  (map #(assert (integer? %)) [iterations migrations num-islands population-size tournament-size mutation-probability
-                               mutation-depth max-depth adf-arity adf-count adl-count adl-limit])
-  ;; report and fitness should be functions
-  (map #(assert (fn? %)) [report fitness])
-  ;; call island generations
+  (map #(assert (integer? %) "Variable must be an integer") [iterations migrations num-islands population-size tournament-size mutation-probability
+                                                             mutation-depth max-depth adf-arity adf-count adl-count adl-limit])
+  (map #(assert (fn? %) "Report and fitness must be functions") [report fitness])
   (islands/island-generations migrations iterations
                               (islands/create-islands num-islands population-size mutation-depth terminals
                                                       numbers functions adf-arity adf-count adl-count adl-limit)
