@@ -1,4 +1,4 @@
-(ns fungp.test.core-test
+(ns fungp.test.trees-test
   (:require [fungp.core :as fungp.core]
             [fungp.logic.trees :as trees])
   (:use [clojure.test]))
