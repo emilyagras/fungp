@@ -1,5 +1,5 @@
 ;;; ### Robot Grid
-;;; 
+;;;
 ;;; Here we want to control a robot on a grid and have
 ;;; it collect coins.
 ;;;
@@ -21,25 +21,13 @@
 ;;;                   (do (left) (move-forward)))
 ;;;
 ;;; There are 5 total state variables: robot-x, robot-y,
-;;; robot-dir, ticks, and coins-available. The first two
-;;; are obvious (x and y coordinates of the robot). The
-;;; third is a number corresponding to the direction the
-;;; robot is facing. The fourth is the number of clock
-;;; ticks that have gone by (each movement of the robot
-;;; takes one click). If too much time has gone by, the
-;;; simulation stops and the program is given a penalty.
-;;; The last one, coins-available, is a list of (x,y)
-;;; pairs corresponding to coin locations. It is
-;;; randomly generated. Once the robot picks up a 
-;;; coin, that pair is removed from the list.
+;;; robot-dir, ticks, and coins-available.
 
 (ns fungp.sample.robot
     (:use fungp.core)
     (:use fungp.util)
     (:use clojure.pprint))
 
-
-;;; ### Some constants
 
 (def MAX_T "Maximum number of ticks" 250)
 (def PENALTY "Points added when time is up" 250)
