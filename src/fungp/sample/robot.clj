@@ -1,3 +1,7 @@
+(ns fungp.sample.robot
+  (:require [fungp.core :as fungp]
+            [fungp.util :as utils]
+            [clojure.pprint :as pp]))
 ;;; ### Robot Grid
 ;;;
 ;;; Here we want to control a robot on a grid and have
@@ -23,10 +27,7 @@
 ;;; There are 5 total state variables: robot-x, robot-y,
 ;;; robot-dir, ticks, and coins-available.
 
-(ns fungp.sample.robot
-    (:use fungp.core)
-    (:use fungp.util)
-    (:use clojure.pprint))
+
 
 
 (def MAX_T "Maximum number of ticks" 250)
@@ -140,8 +141,10 @@
    (the dynamic variables) to see if the robot has run out of time or collected
    all of the coins."
   [f]
-  (binding [robot-x (int (/ GRID_SIZE 2)), robot-y (int (/ GRID_SIZE 2)),
-            robot-dir 0, ticks 0,
+  (binding [robot-x (int (/ GRID_SIZE 2))
+            robot-y (int (/ GRID_SIZE 2))
+            robot-dir 0
+            ticks 0
             coins-available (generate-coins-list)]
            (loop []
                  (f)
@@ -163,7 +166,7 @@
 
 (defn robot-report
   [tree fitness]
-  (pprint (nth tree 2))
+  (pp/pprint (nth tree 2))
   (println (str "Error:\t" fitness "\n\n")))
 
 (defn test-robots [n1 n2]
@@ -174,6 +177,6 @@
                  :functions robot-functions :report robot-report
                  :mutation-depth 2
         }
-        [tree score] (rest (run-genetic-programming options))]
+        [tree score] (rest (fungp/run-genetic-programming options))]
     (do (println "Done!")
         (robot-report tree score))))
