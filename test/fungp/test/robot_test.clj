@@ -1,4 +1,4 @@
-(ns fungp.sample.robot-test
+(ns fungp.test.robot-test
   (:require [fungp.core :as fungp.core]
             [fungp.sample.robot :as robots])
   (:use [clojure.test]))
